@@ -1,0 +1,25 @@
+﻿@using AssesmentTest.Models
+@inject IHttpClientFactory ClientFactory
+
+@if(products == null)
+{
+    <p>Loading...</p>
+}else
+{
+    <ul>
+        @foreach (var product in products)
+        {
+            <li>@product.Name</li>
+        }
+    </ul>
+}
+
+@code {
+    private List<Product>? products;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var client = ClientFactory.CreateClient("ApiClient");
+        products = await client.GetFromJsonAsync<List<Product>>("products");
+    }
+}
